@@ -295,10 +295,10 @@ func (s *suiReadObjectFromSuiImpl) GetAllNFT(ctx context.Context, address string
 		res, err := s.GetOwnedObjects(context.Background(), models.GetOwnedObjectsRequest{
 			Address: address,
 			Cursor:  cursor,
-			Limit:   50,
+			Limit:   20,
 		})
 		if err != nil {
-			return nil, err
+			continue
 		}
 
 		for _, r := range res.Data {
@@ -306,29 +306,69 @@ func (s *suiReadObjectFromSuiImpl) GetAllNFT(ctx context.Context, address string
 		}
 
 		cursor = &res.NextCursor
-		
+
 		if !res.HasNextPage {
 			break
 		}
 	}
 
-	// query multi object
-	resMulti, err := s.GetMultiObject(ctx, models.GetMultiObjectRequest{
-		ObjectIDs: objectIDs,
-	})
-	if err != nil {
-		return nil, err
-	}
-
 	response := []models.GetObjectResponse{}
+	batchsize := 40
+	if len(objectIDs) > batchsize {
+		index := 0
+		step := 0
+		for {
+			min := index * batchsize
+			max := (index + 1) * batchsize
 
-	for _, object := range resMulti.Data {
-		typeSplit := strings.Split(object.Data.Type, "::")
+			if step+batchsize > len(objectIDs) {
+				max = len(objectIDs)
+			}
 
-		if len(typeSplit) == 3 && len(typeSplit[0]) == 66 {
-			response = append(response, object)
+			queryObject := objectIDs[min:max]
+
+			// query multi object
+			resMulti, err := s.GetMultiObject(ctx, models.GetMultiObjectRequest{
+				ObjectIDs: queryObject,
+			})
+			if err != nil {
+				continue
+			}
+
+			for _, object := range resMulti.Data {
+				typeSplit := strings.Split(object.Data.Type, "::")
+
+				if len(typeSplit) == 3 && len(typeSplit[0]) == 66 {
+					response = append(response, object)
+				}
+
+			}
+
+			if max == len(objectIDs) {
+				break
+			}
+
+			index += 1
+			step = index * batchsize
+		}
+	} else {
+		// query multi object
+		resMulti, err := s.GetMultiObject(ctx, models.GetMultiObjectRequest{
+			ObjectIDs: objectIDs,
+		})
+		if err != nil {
+			return nil, err
 		}
 
+		for _, object := range resMulti.Data {
+			typeSplit := strings.Split(object.Data.Type, "::")
+
+			if len(typeSplit) == 3 && len(typeSplit[0]) == 66 {
+				response = append(response, object)
+			}
+
+		}
 	}
+
 	return response, nil
 }
