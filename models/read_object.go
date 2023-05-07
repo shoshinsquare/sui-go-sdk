@@ -9,6 +9,14 @@ type GetObjectRequest struct {
 	ObjectID string `json:"objectID"`
 }
 
+type AttributeContent struct {
+	Type   string `json:"type"`
+	Fields struct {
+		Key   string `json:"key"`
+		Value string `json:"value"`
+	} `json:"fields"`
+}
+
 type ObjectData struct {
 	BSC struct {
 		BcsBytes          string `json:"bcsBytes"`
@@ -35,10 +43,15 @@ type ObjectData struct {
 			Id      struct {
 				Id string `json:"id"`
 			} `json:"id"`
-			Name     string `json:"name"`
-			ImageURL string `json:"image_url"`
-			ImgURL   string `json:"img_url"`
-			URL      string `json:"url"`
+			Name       string `json:"name"`
+			ImageURL   string `json:"image_url"`
+			ImgURL     string `json:"img_url"`
+			URL        string `json:"url"`
+			Attributes struct {
+				Fields struct {
+					Contents []AttributeContent `json:"contents"`
+				} `json:"fields"`
+			} `json:"attributes"`
 		} `json:"fields"`
 	} `json:"content"`
 	Display struct {
