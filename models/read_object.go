@@ -66,8 +66,12 @@ type ObjectData struct {
 	} `json:"display"`
 }
 
+type ErrorObjectResponse struct {
+	Code string `json:"code"`
+}
 type GetObjectResponse struct {
-	Data ObjectData `json:"data"`
+	Data  ObjectData          `json:"data"`
+	Error ErrorObjectResponse `json:"error"`
 }
 
 type GetMultiObjectRequest struct {
