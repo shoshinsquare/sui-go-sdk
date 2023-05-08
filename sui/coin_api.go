@@ -25,7 +25,9 @@ type SuiCoinImpl struct {
 
 func (s *SuiCoinImpl) GetCoins(ctx context.Context, req models.GetCoinsRequeset, opts ...interface{}) (models.GetCoinsResponse, error) {
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "suix_getCoins",
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "suix_getCoins",
 		Params: []interface{}{
 			req.Owner,
 			req.CoinType,
@@ -49,7 +51,9 @@ func (s *SuiCoinImpl) GetCoins(ctx context.Context, req models.GetCoinsRequeset,
 
 func (s *SuiCoinImpl) GetAllCoins(ctx context.Context, req models.GetAllCoinsRequest, opts ...interface{}) (models.GetAllCoinsResponse, error) {
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "suix_getAllCoins",
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "suix_getAllCoins",
 		Params: []interface{}{
 			req.Owner,
 			req.Cursor,
@@ -72,7 +76,9 @@ func (s *SuiCoinImpl) GetAllCoins(ctx context.Context, req models.GetAllCoinsReq
 
 func (s *SuiCoinImpl) GetAllBalances(ctx context.Context, req models.GetAllBalancesRequest, opts ...interface{}) (models.GetAllBalancesResponse, error) {
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "sui_getAllBalances",
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "sui_getAllBalances",
 		Params: []interface{}{
 			req.Owner,
 		},
@@ -95,7 +101,9 @@ func (s *SuiCoinImpl) GetAllBalances(ctx context.Context, req models.GetAllBalan
 
 func (s *SuiCoinImpl) GetBalance(ctx context.Context, req models.GetBalanceRequest, opts ...interface{}) (models.GetBalanceResponse, error) {
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "suix_getBalance",
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "suix_getBalance",
 		Params: []interface{}{
 			req.Owner,
 			req.CoinType,
