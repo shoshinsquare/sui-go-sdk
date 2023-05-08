@@ -56,6 +56,6 @@ type GetTotalSupplyResponse struct{}
 type Balance struct {
 	CoinType        string      `json:"coinType"`
 	CoinObjectCount uint64      `json:"coinObjectCount"`
-	TotalBalance    uint64      `json:"totalBalance"`
+	TotalBalance    string      `json:"totalBalance"`
 	LockedBalance   interface{} `json:"lockedBalance"`
 }
