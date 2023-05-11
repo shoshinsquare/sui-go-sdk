@@ -18,7 +18,7 @@ type IGovernanceAPI interface {
 	GetCommitteeInfo(ctx context.Context, req models.GetCommitteeInfoRequest, opts ...interface{}) (models.GetCommitteeInfoResponse, error)
 	GetSuiSystemState(ctx context.Context, req models.GetSuiSystemStateRequest, opt ...interface{}) (models.GetSuiSystemStateResponse, error)
 	GetCheckpoint(ctx context.Context, req models.GetCheckpointRequest, opts ...interface{}) (models.GetCheckpointResponse, error)
-	GetLatestCheckpointSequenceNumber(ctx context.Context, req models.GetLatestCheckpointSequenceNumberRequest, opts ...interface{}) (uint64, error)
+	GetLatestCheckpointSequenceNumber(ctx context.Context, req models.GetLatestCheckpointSequenceNumberRequest, opts ...interface{}) (string, error)
 }
 
 type SuiGovernanceImpl struct {
@@ -130,21 +130,21 @@ func (s *SuiGovernanceImpl) GetCheckpoint(ctx context.Context, req models.GetChe
 }
 
 // Get checkpoint by id
-func (s *SuiGovernanceImpl) GetLatestCheckpointSequenceNumber(ctx context.Context, req models.GetLatestCheckpointSequenceNumberRequest, opts ...interface{}) (uint64, error) {
+func (s *SuiGovernanceImpl) GetLatestCheckpointSequenceNumber(ctx context.Context, req models.GetLatestCheckpointSequenceNumberRequest, opts ...interface{}) (string, error) {
 	respBytes, err := s.cli.Request(ctx, models.Operation{
 		Method: "sui_getLatestCheckpointSequenceNumber",
 		Params: []interface{}{},
 	})
 	if err != nil {
-		return 0, err
+		return "0", err
 	}
 	if gjson.ParseBytes(respBytes).Get("error").Exists() {
-		return 0, errors.New(gjson.ParseBytes(respBytes).Get("error").String())
+		return "0", errors.New(gjson.ParseBytes(respBytes).Get("error").String())
 	}
-	var rsp uint64
+	var rsp string
 	err = json.Unmarshal([]byte(gjson.ParseBytes(respBytes).Get("result").String()), &rsp)
 	if err != nil {
-		return 0, err
+		return "0", err
 	}
 	return rsp, nil
 }

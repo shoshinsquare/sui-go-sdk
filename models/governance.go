@@ -61,10 +61,5 @@ type GetCheckpointRequest struct {
 }
 
 type GetCheckpointResponse struct {
-	SequenceNumber           string   `json:"sequenceNumber"`
-	Digest                   string   `json:"digest"`
-	NetworkTotalTransactions uint64   `json:"networkTotalTransactions"`
-	TimestampMs              uint64   `json:"timestampMs"`
-	PreviousDigest           string   `json:"previousDigest"`
-	Transactions             []string `json:"transactions"`
+	Transactions []string `json:"transactions"`
 }
