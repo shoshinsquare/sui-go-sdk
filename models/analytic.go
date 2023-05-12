@@ -20,11 +20,11 @@ type TransactionType struct {
 }
 
 type TransactionInput struct {
-	Type       string `json:"type"`
-	ObjectType string `json:"objectType"`
-	ObjectId   string `json:"objectId"`
-	ValueType  string `json:"valueType"`
-	Value      string `json:"value"`
+	Type       string      `json:"type"`
+	ObjectType string      `json:"objectType"`
+	ObjectId   string      `json:"objectId"`
+	ValueType  string      `json:"valueType"`
+	Value      interface{} `json:"value"`
 }
 
 type Transaction struct {
