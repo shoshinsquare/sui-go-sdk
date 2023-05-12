@@ -50,8 +50,6 @@ type Effects struct {
 }
 
 type GetTransactionBlockResponse struct {
-	Digest      string      `json:"digest"`
-	Checkpint   uint64      `json:"checkpoint"`
 	Events      []Events    `json:"events"`
 	Transaction Transaction `json:"transaction"`
 	Effects     Effects     `json:"effects"`
