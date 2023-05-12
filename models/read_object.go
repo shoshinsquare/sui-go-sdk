@@ -97,11 +97,6 @@ type Events struct {
 	Type              string      `json:"type"`
 }
 
-type GetTransactionBlockResponse struct {
-	Digest    string   `json:"digest"`
-	Checkpint uint64   `json:"checkpoint"`
-	Events    []Events `json:"events"`
-}
 
 type GetObjectsOwnedByAddressRequest struct {
 	Address string `json:"address"`
