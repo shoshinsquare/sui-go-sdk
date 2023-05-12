@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"github.com/shoshinsquare/sui-go-sdk/common/rpc_client"
 	"github.com/shoshinsquare/sui-go-sdk/models"
@@ -18,7 +19,7 @@ type IGovernanceAPI interface {
 	GetCommitteeInfo(ctx context.Context, req models.GetCommitteeInfoRequest, opts ...interface{}) (models.GetCommitteeInfoResponse, error)
 	GetSuiSystemState(ctx context.Context, req models.GetSuiSystemStateRequest, opt ...interface{}) (models.GetSuiSystemStateResponse, error)
 	GetCheckpoint(ctx context.Context, req models.GetCheckpointRequest, opts ...interface{}) (models.GetCheckpointResponse, error)
-	GetLatestCheckpointSequenceNumber(ctx context.Context, req models.GetLatestCheckpointSequenceNumberRequest, opts ...interface{}) (string, error)
+	GetLatestCheckpointSequenceNumber(ctx context.Context, req models.GetLatestCheckpointSequenceNumberRequest, opts ...interface{}) (int64, error)
 }
 
 type SuiGovernanceImpl struct {
@@ -136,7 +137,7 @@ func (s *SuiGovernanceImpl) GetCheckpoint(ctx context.Context, req models.GetChe
 }
 
 // Get checkpoint by id
-func (s *SuiGovernanceImpl) GetLatestCheckpointSequenceNumber(ctx context.Context, req models.GetLatestCheckpointSequenceNumberRequest, opts ...interface{}) (string, error) {
+func (s *SuiGovernanceImpl) GetLatestCheckpointSequenceNumber(ctx context.Context, req models.GetLatestCheckpointSequenceNumberRequest, opts ...interface{}) (int64, error) {
 	respBytes, err := s.cli.Request(ctx, models.Operation{
 		JsonRPC: "2.0",
 		ID:      1,
@@ -144,15 +145,17 @@ func (s *SuiGovernanceImpl) GetLatestCheckpointSequenceNumber(ctx context.Contex
 		Params:  []interface{}{},
 	})
 	if err != nil {
-		return "0", err
+		return 0, err
 	}
 	if gjson.ParseBytes(respBytes).Get("error").Exists() {
-		return "0", errors.New(gjson.ParseBytes(respBytes).Get("error").String())
+		return 0, errors.New(gjson.ParseBytes(respBytes).Get("error").String())
 	}
-	var rsp string
+
+	fmt.Println(gjson.ParseBytes(respBytes).Get("result").String())
+	var rsp int64
 	err = json.Unmarshal([]byte(gjson.ParseBytes(respBytes).Get("result").String()), &rsp)
 	if err != nil {
-		return "0", err
+		return 0, err
 	}
 	return rsp, nil
 }
