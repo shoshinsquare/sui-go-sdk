@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 
 	"github.com/shoshinsquare/sui-go-sdk/common/rpc_client"
 	"github.com/shoshinsquare/sui-go-sdk/models"
@@ -151,7 +150,6 @@ func (s *SuiGovernanceImpl) GetLatestCheckpointSequenceNumber(ctx context.Contex
 		return 0, errors.New(gjson.ParseBytes(respBytes).Get("error").String())
 	}
 
-	fmt.Println(gjson.ParseBytes(respBytes).Get("result").String())
 	var rsp int64
 	err = json.Unmarshal([]byte(gjson.ParseBytes(respBytes).Get("result").String()), &rsp)
 	if err != nil {
