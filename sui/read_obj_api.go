@@ -31,16 +31,18 @@ type suiReadObjectFromSuiImpl struct {
 func (s *suiReadObjectFromSuiImpl) GetTransactionBlock(ctx context.Context, req models.GetTransactionBlockRequest, opt ...interface{}) (models.GetTransactionBlockResponse, error) {
 	var rsp models.GetTransactionBlockResponse
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "sui_getTransactionBlock",
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "sui_getTransactionBlock",
 		Params: []interface{}{
 			req.Digest,
 			map[string]bool{
-				"showInput":          false,
-				"showRawInput":       false,
-				"showEffects":        false,
+				"showInput":          true,
+				"showRawInput":       true,
+				"showEffects":        true,
 				"showEvents":         true,
-				"showObjectChanges":  false,
-				"showBalanceChanges": false,
+				"showObjectChanges":  true,
+				"showBalanceChanges": true,
 			},
 		},
 	})

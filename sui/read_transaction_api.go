@@ -34,8 +34,10 @@ func (s *suiReadTransactionFromSuiImpl) GetRecentTransactions(ctx context.Contex
 	reqList := make([]interface{}, 0)
 	reqList = append(reqList, req.Count)
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "sui_getRecentTransactions",
-		Params: reqList,
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "sui_getRecentTransactions",
+		Params:  reqList,
 	})
 	if err != nil {
 		return models.GetRecentTransactionResponse{}, err
@@ -61,8 +63,10 @@ func (s *suiReadTransactionFromSuiImpl) GetRecentTransactions(ctx context.Contex
 func (s *suiReadTransactionFromSuiImpl) GetTotalTransactionNumber(ctx context.Context, req models.GetTotalTransactionNumberRequest, opts ...interface{}) (models.GetTotalTransactionNumberResponse, error) {
 	var rsp models.GetTotalTransactionNumberResponse
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "sui_getTotalTransactionNumber",
-		Params: []interface{}{},
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "sui_getTotalTransactionNumber",
+		Params:  []interface{}{},
 	})
 	if err != nil {
 		return models.GetTotalTransactionNumberResponse{}, err
@@ -79,7 +83,9 @@ func (s *suiReadTransactionFromSuiImpl) GetTotalTransactionNumber(ctx context.Co
 func (s *suiReadTransactionFromSuiImpl) GetTransaction(ctx context.Context, req models.GetTransactionRequest, opts ...interface{}) (models.GetTransactionResponse, error) {
 	var rsp models.GetTransactionResponse
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "sui_getTransaction",
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "sui_getTransaction",
 		Params: []interface{}{
 			req.Digest,
 		},
@@ -102,7 +108,9 @@ func (s *suiReadTransactionFromSuiImpl) GetTransaction(ctx context.Context, req 
 func (s *suiReadTransactionFromSuiImpl) GetTransactionsByInputObject(ctx context.Context, req models.GetTransactionsByInputObjectRequest, opts ...interface{}) (models.GetTransactionsByInputObjectResponse, error) {
 	var rsp models.GetTransactionsByInputObjectResponse
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "sui_getTransactionsByInputObject",
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "sui_getTransactionsByInputObject",
 		Params: []interface{}{
 			req.ObjectID,
 		},
@@ -131,7 +139,9 @@ func (s *suiReadTransactionFromSuiImpl) GetTransactionsByInputObject(ctx context
 func (s *suiReadTransactionFromSuiImpl) GetTransactionsByMoveFunction(ctx context.Context, req models.GetTransactionsByMoveFunctionRequest, opts ...interface{}) (models.GetTransactionsByMoveFunctionResponse, error) {
 	var rsp models.GetTransactionsByMoveFunctionResponse
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "sui_getTransactionsByInputObject",
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "sui_getTransactionsByInputObject",
 		Params: []interface{}{
 			req.Package,
 			req.Module,
@@ -162,7 +172,9 @@ func (s *suiReadTransactionFromSuiImpl) GetTransactionsByMoveFunction(ctx contex
 func (s *suiReadTransactionFromSuiImpl) GetTransactionsByMutatedObject(ctx context.Context, req models.GetTransactionsByMutatedObjectRequest, opts ...interface{}) (models.GetTransactionsByMutatedObjectResponse, error) {
 	var rsp models.GetTransactionsByMutatedObjectResponse
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "sui_getTransactionsByMutatedObject",
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "sui_getTransactionsByMutatedObject",
 		Params: []interface{}{
 			req.ObjectID,
 		},
@@ -191,7 +203,9 @@ func (s *suiReadTransactionFromSuiImpl) GetTransactionsByMutatedObject(ctx conte
 func (s *suiReadTransactionFromSuiImpl) GetTransactionsFromAddress(ctx context.Context, req models.GetTransactionsFromAddressRequest, opts ...interface{}) (models.GetTransactionsFromAddressResponse, error) {
 	var rsp models.GetTransactionsFromAddressResponse
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "sui_getTransactionsFromAddress",
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "sui_getTransactionsFromAddress",
 		Params: []interface{}{
 			req.Addr,
 		},
@@ -220,7 +234,9 @@ func (s *suiReadTransactionFromSuiImpl) GetTransactionsFromAddress(ctx context.C
 func (s *suiReadTransactionFromSuiImpl) GetTransactionsInRange(ctx context.Context, req models.GetTransactionsInRangeRequest, opts ...interface{}) (models.GetTransactionsInRangeResponse, error) {
 	var rsp models.GetTransactionsInRangeResponse
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "sui_getTransactionsInRange",
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "sui_getTransactionsInRange",
 		Params: []interface{}{
 			req.Start,
 			req.End,
@@ -250,7 +266,9 @@ func (s *suiReadTransactionFromSuiImpl) GetTransactionsInRange(ctx context.Conte
 func (s *suiReadTransactionFromSuiImpl) GetTransactionsToAddress(ctx context.Context, req models.GetTransactionsToAddressRequest, opts ...interface{}) (models.GetTransactionsToAddressResponse, error) {
 	var rsp models.GetTransactionsToAddressResponse
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "sui_getTransactionsToAddress",
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "sui_getTransactionsToAddress",
 		Params: []interface{}{
 			req.Addr,
 		},
@@ -277,7 +295,9 @@ func (s *suiReadTransactionFromSuiImpl) GetTransactionsToAddress(ctx context.Con
 
 func (s *suiReadTransactionFromSuiImpl) GetTransactionAuthSigners(ctx context.Context, req models.GetTransactionAuthSignersRequest, opts ...interface{}) (models.GetTransactionAuthSignersResponse, error) {
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "sui_getTransactionAuthSigners",
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "sui_getTransactionAuthSigners",
 		Params: []interface{}{
 			req.Digest,
 		},

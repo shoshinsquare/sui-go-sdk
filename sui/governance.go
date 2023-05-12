@@ -69,8 +69,10 @@ func (s *SuiGovernanceImpl) GetDelegatedStakes(ctx context.Context, req models.G
 
 func (s *SuiGovernanceImpl) GetValidators(ctx context.Context, req models.GetValidatorsRequest, opts ...interface{}) (models.GetValidatorsResponse, error) {
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "sui_getValidators",
-		Params: []interface{}{},
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "sui_getValidators",
+		Params:  []interface{}{},
 	})
 	if err != nil {
 		return models.GetValidatorsResponse{}, err
@@ -90,8 +92,10 @@ func (s *SuiGovernanceImpl) GetValidators(ctx context.Context, req models.GetVal
 
 func (s *SuiGovernanceImpl) GetSuiSystemState(ctx context.Context, req models.GetSuiSystemStateRequest, opts ...interface{}) (models.GetSuiSystemStateResponse, error) {
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "sui_getSuiSystemState",
-		Params: []interface{}{},
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "sui_getSuiSystemState",
+		Params:  []interface{}{},
 	})
 	if err != nil {
 		return models.GetSuiSystemStateResponse{}, err
@@ -110,7 +114,9 @@ func (s *SuiGovernanceImpl) GetSuiSystemState(ctx context.Context, req models.Ge
 // Get checkpoint by id
 func (s *SuiGovernanceImpl) GetCheckpoint(ctx context.Context, req models.GetCheckpointRequest, opts ...interface{}) (models.GetCheckpointResponse, error) {
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "sui_getCheckpoint",
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "sui_getCheckpoint",
 		Params: []interface{}{
 			req.Id,
 		},
@@ -132,8 +138,10 @@ func (s *SuiGovernanceImpl) GetCheckpoint(ctx context.Context, req models.GetChe
 // Get checkpoint by id
 func (s *SuiGovernanceImpl) GetLatestCheckpointSequenceNumber(ctx context.Context, req models.GetLatestCheckpointSequenceNumberRequest, opts ...interface{}) (string, error) {
 	respBytes, err := s.cli.Request(ctx, models.Operation{
-		Method: "sui_getLatestCheckpointSequenceNumber",
-		Params: []interface{}{},
+		JsonRPC: "2.0",
+		ID:      1,
+		Method:  "sui_getLatestCheckpointSequenceNumber",
+		Params:  []interface{}{},
 	})
 	if err != nil {
 		return "0", err
