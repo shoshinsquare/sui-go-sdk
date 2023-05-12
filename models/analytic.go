@@ -37,6 +37,7 @@ type Transaction struct {
 			Transactions     []TransactionType  `json:"transactions"`
 			TransactionInput []TransactionInput `json:"inputs"`
 		} `json:"transaction"`
+		Sender string `json:"sender"`
 	} `json:"data"`
 }
 
