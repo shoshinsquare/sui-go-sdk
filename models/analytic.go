@@ -45,8 +45,17 @@ type Mutated struct {
 	} `json:"reference"`
 }
 
+type Created struct {
+	Owner struct {
+		ObjectOwner string `json:"ObjectOwner"`
+	} `json:"owner"`
+	Reference struct {
+		ObjectId string `json:"objectId"`
+	} `json:"reference"`
+}
 type Effects struct {
 	Mutated []Mutated `json:"mutated"`
+	Created []Created `json:"created"`
 }
 
 type GetTransactionBlockResponse struct {
