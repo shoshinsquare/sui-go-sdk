@@ -62,6 +62,7 @@ type ObjectData struct {
 			ImageURL    string `json:"image_url"`
 			ProjectURL  string `json:"project_url"`
 			Name        string `json:"name"`
+			Kiosk       string `json:"kiosk"`
 		} `json:"data"`
 	} `json:"display"`
 }
@@ -96,7 +97,6 @@ type Events struct {
 	TransactionModule string      `json:"transactionModule"`
 	Type              string      `json:"type"`
 }
-
 
 type GetObjectsOwnedByAddressRequest struct {
 	Address string `json:"address"`
@@ -185,18 +185,25 @@ type GetOwnedObjectsResponse struct {
 }
 
 type GetDynamicFieldRequest struct {
-	ParentObjectID string `json:"parent_object_id"`
+	ParentObjectID string  `json:"parent_object_id"`
+	Cursor         *string `json:"cursor"`
 }
 
 type DynamicFieldData struct {
-	Name       string `json:"name"`
+	Name struct {
+		Type  string `json:"type"`
+		Value struct {
+			Id string `json:"id"`
+		} `json:"value"`
+	} `json:"name"`
 	BCSName    string `json:"bcsName"`
 	Type       string `json:"type"`
 	ObjectType string `json:"objectType"`
 	ObjectId   string `json:"objectId"`
-	Version    string `json:"version"`
+	Version    int64  `json:"version"`
 	Digest     string `json:"digest"`
 }
+
 type GetDynamicFieldResponse struct {
 	HasNextPage bool               `json:"hasNextPage"`
 	NextCursor  string             `json:"nextCursor"`

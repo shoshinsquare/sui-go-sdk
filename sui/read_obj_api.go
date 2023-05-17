@@ -270,6 +270,8 @@ func (s *suiReadObjectFromSuiImpl) GetDynamicField(ctx context.Context, req mode
 		Method:  "suix_getDynamicFields",
 		Params: []interface{}{
 			req.ParentObjectID,
+			req.Cursor,
+			50,
 		},
 	})
 	if err != nil {
@@ -315,6 +317,8 @@ func (s *suiReadObjectFromSuiImpl) GetAllNFT(ctx context.Context, address string
 	}
 
 	response := []models.GetObjectResponse{}
+	kiosks := []string{}
+
 	batchsize := 40
 	if len(objectIDs) > batchsize {
 		index := 0
@@ -338,10 +342,16 @@ func (s *suiReadObjectFromSuiImpl) GetAllNFT(ctx context.Context, address string
 			}
 
 			for _, object := range resMulti.Data {
-				typeSplit := strings.Split(object.Data.Type, "::")
+				if strings.Contains(object.Data.Type, "kiosk") {
+					if object.Data.Display.Data.Kiosk != "" {
+						kiosks = append(kiosks, object.Data.Display.Data.Kiosk)
+					}
+				} else {
+					typeSplit := strings.Split(object.Data.Type, "::")
 
-				if len(typeSplit) == 3 && len(typeSplit[0]) == 66 {
-					response = append(response, object)
+					if len(typeSplit) == 3 && len(typeSplit[0]) == 66 {
+						response = append(response, object)
+					}
 				}
 
 			}
@@ -363,12 +373,110 @@ func (s *suiReadObjectFromSuiImpl) GetAllNFT(ctx context.Context, address string
 		}
 
 		for _, object := range resMulti.Data {
+			if strings.Contains(object.Data.Type, "kiosk") {
+				if object.Data.Display.Data.Kiosk != "" {
+					kiosks = append(kiosks, object.Data.Display.Data.Kiosk)
+				}
+			} else {
+				typeSplit := strings.Split(object.Data.Type, "::")
+
+				if len(typeSplit) == 3 && len(typeSplit[0]) == 66 {
+					response = append(response, object)
+				}
+			}
+		}
+	}
+
+	kioskObjects := []string{}
+	if len(kiosks) > 0 {
+		for _, kiosk := range kiosks {
+
+			// get dynamic field
+			var cursor *string = nil
+			for {
+				fields, err := s.GetDynamicField(context.Background(), models.GetDynamicFieldRequest{
+					ParentObjectID: kiosk,
+					Cursor:         cursor,
+				})
+				if err != nil {
+					break
+				}
+
+				// loop get data
+				for _, fieldData := range fields.Data {
+					if strings.Contains(fieldData.ObjectType, "kiosk") {
+						continue
+					}
+
+					typeSplit := strings.Split(fieldData.ObjectType, "::")
+					if len(typeSplit) == 3 && len(typeSplit[0]) == 66 {
+						kioskObjects = append(kioskObjects, fieldData.ObjectId)
+					}
+				}
+
+				cursor = &fields.NextCursor
+				if !fields.HasNextPage {
+					break
+				}
+			}
+		}
+	}
+
+	if len(kioskObjects) > batchsize {
+		index := 0
+		step := 0
+		for {
+			min := index * batchsize
+			max := (index + 1) * batchsize
+
+			if step+batchsize > len(kioskObjects) {
+				max = len(kioskObjects)
+			}
+
+			queryObject := kioskObjects[min:max]
+
+			// query multi object
+			resMulti, err := s.GetMultiObject(ctx, models.GetMultiObjectRequest{
+				ObjectIDs: queryObject,
+			})
+			if err != nil {
+				continue
+			}
+
+			for _, object := range resMulti.Data {
+				if strings.Contains(object.Data.Type, "kiosk") {
+					kiosks = append(kiosks, object.Data.ObjectID)
+				} else {
+					typeSplit := strings.Split(object.Data.Type, "::")
+
+					if len(typeSplit) == 3 && len(typeSplit[0]) == 66 {
+						response = append(response, object)
+					}
+				}
+			}
+
+			if max == len(kioskObjects) {
+				break
+			}
+
+			index += 1
+			step = index * batchsize
+		}
+	} else {
+		// query multi object
+		resMulti, err := s.GetMultiObject(ctx, models.GetMultiObjectRequest{
+			ObjectIDs: kioskObjects,
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		for _, object := range resMulti.Data {
 			typeSplit := strings.Split(object.Data.Type, "::")
 
 			if len(typeSplit) == 3 && len(typeSplit[0]) == 66 {
 				response = append(response, object)
 			}
-
 		}
 	}
 
