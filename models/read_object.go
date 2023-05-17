@@ -50,6 +50,11 @@ type ObjectData struct {
 			Attributes struct {
 				Fields struct {
 					Contents []AttributeContent `json:"contents"`
+					Map      struct {
+						Fields struct {
+							Content []AttributeContent `json:"contents"`
+						} `json:"fields"`
+					} `json:"map"`
 				} `json:"fields"`
 			} `json:"attributes"`
 		} `json:"fields"`
