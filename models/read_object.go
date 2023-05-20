@@ -47,6 +47,7 @@ type ObjectData struct {
 			ImageURL   string `json:"image_url"`
 			ImgURL     string `json:"img_url"`
 			URL        string `json:"url"`
+			Link        string `json:"link"`
 			Attributes struct {
 				Fields struct {
 					Contents []AttributeContent `json:"contents"`
