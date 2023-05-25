@@ -319,7 +319,7 @@ func (s *suiReadObjectFromSuiImpl) GetAllNFT(ctx context.Context, address string
 	response := []models.GetObjectResponse{}
 	kiosks := []string{}
 
-	batchsize := 2
+	batchsize := 1
 	if len(objectIDs) > batchsize {
 		index := 0
 		step := 0
