@@ -10,15 +10,13 @@ import (
 
 func main() {
 
-	cli := sui.NewSuiClient("https://fullnode.testnet.sui.io/")
+	cli := sui.NewSuiClient("https://wallet-rpc.mainnet.sui.io/")
 	object, err := cli.GetObject(context.Background(), models.GetObjectRequest{
-		ObjectID: "0xc74788debd5e9e79e5be1197a63e3e5f0d80af5eea0a3c2d6a4105814c4e7c5a",
+		ObjectID: "0x831705e3d61d56c173fb01a81248dc933406fc32ad598f61a1c965386e46a830",
 	})
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	for _, content := range object.Data.Content.Fields.Attributes.Fields.Contents {
-		fmt.Println(content.Fields)
-	}
+	fmt.Println(object)
 }
