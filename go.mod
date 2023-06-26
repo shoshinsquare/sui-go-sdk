@@ -13,6 +13,7 @@ require (
 
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
+	github.com/dvsekhvalnov/jose2go v1.5.0 // indirect
 	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/klauspost/compress v1.15.15 // indirect
 	github.com/labstack/echo/v4 v4.7.2 // indirect

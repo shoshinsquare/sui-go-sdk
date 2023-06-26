@@ -44,7 +44,7 @@ type Intent struct {
 func DefaultIntent() Intent {
 	return Intent{
 		Scope: IntentScope{
-			TransactionData: &EmptyEnum{},
+			PersonalMessage: &EmptyEnum{},
 		},
 		Version: IntentVersion{
 			V0: &EmptyEnum{},
